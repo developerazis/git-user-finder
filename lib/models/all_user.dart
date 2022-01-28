@@ -7,10 +7,11 @@ class AllUser {
 
   AllUser.fromJson(json) {
     if (json != null) {
-      users = <User>[];
-      json.forEach((v) {
-        users!.add(new User.fromJson(v));
-      });
+      List data = json as List;
+      users = data.map((e) => User.fromJson(e)).toList();
+      // json.forEach((v) {
+      //   users!.add(new User.fromJson(v));
+      // });
     }
   }
 
