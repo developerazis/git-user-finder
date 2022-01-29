@@ -16,17 +16,21 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     // TODO: implement initState
+    Provider.of<UserProvider>(context, listen: false).scrollListener();
     Future.delayed(Duration.zero, () {
       Provider.of<UserProvider>(context, listen: false).fetchAllUser();
     });
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    //final _userProvider = Provider.of<UserProvider>(context, listen: false);
+    final _userProvider = Provider.of<UserProvider>(context, listen: false);
     return Scaffold(
       body: CustomScrollView(
+        physics: BouncingScrollPhysics(),
+        controller: _userProvider.scrollController,
         slivers: [
           SliverAppBar(
             pinned: true,
@@ -44,6 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Container(
                         height: 50,
                         child: TextField(
+                          controller: _userProvider.textEditingController,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(4),
@@ -63,7 +68,16 @@ class _HomeScreenState extends State<HomeScreen> {
                       width: 8,
                     ),
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        if (_userProvider.textEditingController.text != "") {
+                          _userProvider.isSearch = true;
+                          _userProvider.page = 1;
+                        } else {
+                          _userProvider.isSearch = false;
+                          _userProvider.page = 0;
+                        }
+                        _userProvider.fetchAllUser();
+                      },
                       child: Container(
                           decoration: BoxDecoration(),
                           height: 50,
@@ -111,16 +125,41 @@ class _HomeScreenState extends State<HomeScreen> {
                   ]));
                 }
                 return SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                  (context, index) {
-                    User _user = provider.listUser![index];
-                    return ListTile(
-                      title: Text(_user.login.toString()),
-                      leading: Image.network(_user.avatarUrl.toString()),
-                    );
-                  },
-                  childCount: provider.listUser?.length ?? 0,
-                ));
+                    delegate: SliverChildListDelegate([
+                  ListView.separated(
+                    shrinkWrap: true,
+                    separatorBuilder: (context, index) => Divider(),
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: provider.listUser?.length ?? 0,
+                    itemBuilder: (context, index) {
+                      User _user = provider.listUser![index];
+                      return ListTile(
+                        title: Text(_user.login.toString()),
+                        leading: Image.network(_user.avatarUrl.toString()),
+                        trailing: Text(_user.id.toString()),
+                      );
+                    },
+                  ),
+                  (provider.isLastPage)
+                      ? Container()
+                      : Center(
+                          child: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: CircularProgressIndicator(),
+                          ),
+                        )
+                ]));
+                // return SliverList(
+                //     delegate: SliverChildBuilderDelegate(
+                //   (context, index) {
+                //     User _user = provider.listUser![index];
+                //     return ListTile(
+                //       title: Text(_user.login.toString()),
+                //       leading: Image.network(_user.avatarUrl.toString()),
+                //     );
+                //   },
+                //   childCount: provider.listUser?.length ?? 0,
+                // ));
               })
         ],
       ),

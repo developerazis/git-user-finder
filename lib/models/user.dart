@@ -17,28 +17,27 @@ class User {
   String? receivedEventsUrl;
   String? type;
   bool? siteAdmin;
-  int? score;
 
-  User(
-      {this.login,
-      this.id,
-      this.nodeId,
-      this.avatarUrl,
-      this.gravatarId,
-      this.url,
-      this.htmlUrl,
-      this.followersUrl,
-      this.followingUrl,
-      this.gistsUrl,
-      this.starredUrl,
-      this.subscriptionsUrl,
-      this.organizationsUrl,
-      this.reposUrl,
-      this.eventsUrl,
-      this.receivedEventsUrl,
-      this.type,
-      this.siteAdmin,
-      this.score});
+  User({
+    this.login,
+    this.id,
+    this.nodeId,
+    this.avatarUrl,
+    this.gravatarId,
+    this.url,
+    this.htmlUrl,
+    this.followersUrl,
+    this.followingUrl,
+    this.gistsUrl,
+    this.starredUrl,
+    this.subscriptionsUrl,
+    this.organizationsUrl,
+    this.reposUrl,
+    this.eventsUrl,
+    this.receivedEventsUrl,
+    this.type,
+    this.siteAdmin,
+  });
 
   User.fromJson(Map<String, dynamic> json) {
     login = json['login'];
@@ -59,7 +58,6 @@ class User {
     receivedEventsUrl = json['received_events_url'];
     type = json['type'];
     siteAdmin = json['site_admin'];
-    score = json['score'];
   }
 
   Map<String, dynamic> toJson() {
@@ -82,7 +80,6 @@ class User {
     data['received_events_url'] = this.receivedEventsUrl;
     data['type'] = this.type;
     data['site_admin'] = this.siteAdmin;
-    data['score'] = this.score;
     return data;
   }
 }
