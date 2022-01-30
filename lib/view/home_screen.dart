@@ -116,9 +116,20 @@ class _HomeScreenState extends State<HomeScreen> {
                     Container(
                       height: MediaQuery.of(context).size.height,
                       child: Center(
-                        child: Icon(
-                          Icons.web_asset_off,
-                          size: 120,
+                        child: Column(
+                          children: [
+                            Icon(
+                              Icons.web_asset_off,
+                              size: 120,
+                            ),
+                            SizedBox(
+                              height: 12,
+                            ),
+                            Text(
+                              "Ups, Data Empty",
+                              style: TextStyle(fontSize: 18),
+                            )
+                          ],
                         ),
                       ),
                     )
@@ -136,7 +147,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       return ListTile(
                         title: Text(_user.login.toString()),
                         leading: Image.network(_user.avatarUrl.toString()),
-                        trailing: Text(_user.id.toString()),
                       );
                     },
                   ),
@@ -149,17 +159,6 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         )
                 ]));
-                // return SliverList(
-                //     delegate: SliverChildBuilderDelegate(
-                //   (context, index) {
-                //     User _user = provider.listUser![index];
-                //     return ListTile(
-                //       title: Text(_user.login.toString()),
-                //       leading: Image.network(_user.avatarUrl.toString()),
-                //     );
-                //   },
-                //   childCount: provider.listUser?.length ?? 0,
-                // ));
               })
         ],
       ),

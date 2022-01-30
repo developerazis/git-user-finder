@@ -15,12 +15,6 @@ class UserProvider with ChangeNotifier {
   int totalUserFinded = 0;
   int totalPage = 0;
 
-  // UserProvider() {
-  //   Future.delayed(Duration.zero, () {
-  //     fetchAllUser();
-  //   });
-  // }
-
   Future fetchAllUser() async {
     isLoading = true;
     notifyListeners();
@@ -58,7 +52,6 @@ class UserProvider with ChangeNotifier {
           if (page < totalPage) {
             isLastPage = false;
             page++;
-            print(page);
             UserFind? _userFind = await UserService()
                 .getUser(name: textEditingController.text, page: page);
             totalUserFinded = _userFind?.totalCount ?? 0;
